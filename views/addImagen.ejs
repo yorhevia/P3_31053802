@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Imagen</title>
+	<style type="text/css">
+		@font-face{
+          font-family:'digital';
+          src:url('/fuentes/DS-DIGIT.TTF');
+       }
+	body{
+      background-image:url('https://images.unsplash.com/photo-1579263504360-8810aad2912a?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-attachment: fixed;
+      background-size: cover;
+     }
+    form{
+    	display: flex;
+        justify-content: center;
+        align-items: center;
+    	margin:80px auto;
+    	width:50%;
+    	background:rgba(71, 69, 72, .8);
+    	border-radius:30px 30px 30px 30px;
+    }
+    input{
+    	padding:10px;
+    	margin:10px;
+    	width:20%;
+    	border-radius:30px 30px 30px 30px;
+    }
+    label{
+    	 font:30px 'digital';
+    	color:white;
+    }
+    h1{
+    font:50px 'digital';
+    text-align: center;
+    color:white;
+    line-height:80px;
+    }
+    #sendImg{
+    	cursor:pointer;
+    	transition:all 1s;
+    }
+    #sendImg:hover{
+     transform: translateY(10px);
+    }
+	</style>
+</head>
+<body>
+
+<h1>Agregar Imagen</h1>
+
+<form action="/addImagen" method="post">
+
+	<div>
+		<div>
+		
+	<label for='imagen'>Imagen</label>
+	<input type="file" name="img" id="img" placeholder="Imagen" id='imagen'>
+
+	</div>
+
+	<div>
+
+		<label for="destacado">Destacado</label>
+	    <input type="text" name="destacado" placeholder="Destacado" id='destacado'>
+
+	</div>
+	
+	</div>
+	
+
+	<input type="submit" value="Agg" id="sendImg">
+</form>
+</body>
+</html>
