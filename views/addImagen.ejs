@@ -52,7 +52,7 @@
 
 <h1>Agregar Imagen</h1>
 
-<form action="/addImagen" method="post">
+<form action="/addImagen/<%=modelo.producto_id%>" method="post" enctype="multipart/form-data">
 
 	<div>
 		<div>
@@ -65,7 +65,10 @@
 	<div>
 
 		<label for="destacado">Destacado</label>
-	    <input type="text" name="destacado" placeholder="Destacado" id='destacado'>
+	   <select id='destacado' name="destacado">
+		<option value='1'>principal</option>
+		<option value='0'>no main</option>
+	   </select>
 
 	</div>
 	
