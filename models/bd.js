@@ -133,7 +133,7 @@ function aggDato(req, res) {
   });
 }
 
-function mostrarProductosCliente(req, res) {
+function mostrarProductos(req, res) {
   const sql = `SELECT * FROM productos`;
   db.all(sql, [], (err, rows) => {
     console.log(rows,);
@@ -475,6 +475,7 @@ function webpageK(req, res) {
 //_-------------------------------------------------
 module.exports = {
   aggDato,
+  mostrarProductos,
   mostrarUpdate,
   update,
   mostrarDelete,
