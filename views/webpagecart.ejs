@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Web page</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Inicio</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/registercliente"><span class="glyphicon glyphicon-user"></span> Registro</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="bodycard">
+            <div class="container-card" style="padding: 1rem; border-radius: 10px;">
+                <div class="article" style="display: flex; justify-content: center; margin-bottom: 2rem;">
+
+                    <div class="img">
+                        <img src="<%=images.url %>" alt="" width="200px" style="border-radius:5px;">
+                    </div>
+                    <div class="information">
+                    <p style="margin-top: 1.4rem; margin-left: 1.5rem; font-size: 2rem;">Nombre: <%=product.nombre %></p>
+                    <p style="margin-top: 1.4rem; margin-left: 1.5rem; font-size: 2rem;">Descripcion: <%=product.descripcion %></p>
+                    <p style="margin-top: 1.4rem; margin-left: 1.5rem; font-size: 2rem;">Precio: <%=product.precio %>$</p>
+                    <p style="margin-top: 1.4rem; margin-left: 1.5rem; font-size: 2rem;">Cantidad: <%=cant %></p>
+                    <p style="margin-top: 1.4rem; margin-left: 1.5rem; font-size: 2rem;">Monto total a pagar: <%=total %>$ </p>
+                </div>
+                </div>
+                <div class="credit" style="display: flex; justify-content: center;">
+                    <form class="form-horizontal" action="/webpagecartpayment/<%=product.id %>" style="width: 520px;" method="POST">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Nº Tarjeta</label>
+                            <div class="col-sm-10">
+                                <input type="text" required name="tarjeta" class="form-control" id="tarjeta" placeholder="Ingrese el numero de tarjeta">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="pwd">CVV</label>
+                            <div class="col-sm-10">
+                                <input type="text" required name="cvv" class="form-control" id="pwd" placeholder="Ingrese el cvv">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="pwd">Año</label>
+                            <div class="col-sm-10">
+                                <input type="text" required name="ano" class="form-control" id="pwd" placeholder="Ingresa el año">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="pwd">Mes</label>
+                            <div class="col-sm-10">
+                                <input type="text" required name="mes" class="form-control" id="pwd" placeholder="Ingresa el mes">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <input type="hidden" required name="cantidad" value="<%=cant %>">
+                                <input type="hidden" required name="total" value="<%=total %>">
+                                <button type="submit" class="btn btn-default">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-------------->
+
+
+
+</body>
+
+</html>

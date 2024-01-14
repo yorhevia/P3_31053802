@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1 align="center">Clientes</h1>
+    <div class="xd">
+        <table class="table table-hover">
+            <thead>
+
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Pais</th>
+                    <th scope="col">Producto comprado</th>
+                    <th scope="col">Monto pagado</th>
+                    <th scope="col">Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i=0; i < product.length; i++) { %>
+                    <tr>
+                        <th scope="row"><%=product[i].id%></th>
+                        <td>
+                            <%=product[i].email %>
+                        </td>
+                        <td>
+                            <%=product[i].address %>
+                        </td>
+                        <td>
+                            <%=product[i].country %>
+                        </td>
+                        <td>
+                            <%=product[i].nombre %>
+                        </td>
+                        <td>
+                            <%=product[i].total_pagado %>$
+                        </td>
+                        <td>
+                            <%=product[i].descripcion %>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <% } %>
+            <!-------------->
+    </div>
+</body>
+</html>

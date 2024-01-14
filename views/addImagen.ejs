@@ -52,13 +52,12 @@
 
 <h1>Agregar Imagen</h1>
 
-<form action="/addImagen" method="post">
-
+<form action="/addImagen/<%= producto.id%>" method="POST">
 	<div>
 		<div>
 		
 	<label for='imagen'>Imagen</label>
-	<input type="file" name="img" id="img" placeholder="Imagen" id='imagen'>
+	<input type="input" name="img" id="img" placeholder="Imagen" id='imagen'>
 
 	</div>
 

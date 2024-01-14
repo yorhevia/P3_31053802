@@ -13,9 +13,8 @@
      <a id='botonProductos' href="/">Volver</a>
      <a href='/categorias' id='botonProductos'>Categorias</a>
   </div>
- 
- <h1>Productos</h1>
 
+ <h1>Productos</h1>
     <table>
           <tr>
             <th>ID</th>
@@ -29,7 +28,7 @@
           </tr>
           <%for(const producto of modelo){%>
             <tr>
-              <td><%=producto.producto_id%></td>
+              <td><%=producto.id%></td>
               <td><%=producto.nombre%></td>
               <td><%=producto.codigo%></td>
               <td><%=producto.precio%></td>
@@ -37,9 +36,9 @@
               <td><%=producto.calidad%></td>
               <td><%=producto.cantidad%></td>
               <td class="icon">
-              <a href="/update/<%= producto.producto_id%>"><img src="/icon/update.png" width="30"></a>
-              <a href="/delete/<%= producto.producto_id%>"><img src="/icon/delete.png" width="30" id="delete"></a>
-              <a href="/addImagen">Imagen</a>
+              <a href="/update/<%= producto.id%>"><img src="/icon/update.png" width="30"></a>
+              <a href="/delete/<%= producto.id%>"><img src="/icon/delete.png" width="30" id="delete"></a>
+              <a href="/addImagen/<%= producto.id%>">Imagen</a>
              </td>
             </tr>
            <%}%>

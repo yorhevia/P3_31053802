@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Vehiculos</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Inicio</a></li>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Categorias <span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <% for (const c of category) { %>
+                            <li><a href="#"><%= c.nombre%></a></li>
+                            
+                                <% } %>
+                    </ul>
+
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/registercliente"><span class="glyphicon glyphicon-user"></span> Registro</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Filtros</h2>
+        <form class="form-inline" action="/filter" style="gap:10px;" method="POST">
+            <div class="form-group" style="margin-right: 1rem;">
+                <label for="email">Nombre</label>
+                <input type="text" class="form-control" id="email" name="name">
+            </div>
+            <div class="form-group" style="margin-right: 1rem;">
+                <label for="pwd">Calidad</label>
+                <input type="text" class="form-control" id="pwd" name="quality">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Descripcion</label>
+                <input type="text" class="form-control" id="pwd" name="description">
+            </div>
+
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <br>
+        <div class="bodycard" style="display: flex; gap: 25px;">
+            <% for(let i=0; i < product.length; i++) { %>
+            <div class="container-card" style="border: 1px solid; width: 220px; padding: 1rem; border-radius: 10px;">
+                <a href="/cart/<%=product[i].id %>" style="text-decoration: none; color: black;">
+                    <div class="img" style="display: flex; justify-content: center;">
+                        <img src="<%=images[i].url %>" alt="" width="100px" style="border-radius:5px;">
+                    </div>
+                    <p style="margin-top: 1.4rem;">Nombre: <%=product[i].nombre %></p>
+                    <p>Descripcion: <%=product[i].descripcion %></p></p>
+                    <p>Precio: <%=product[i].precio %>$</p></p>
+                </a>
+            </div>
+            <% } %>
+            
+        </div>
+
+    </div>
+    <!-------------->
+</body>
+
+</html>

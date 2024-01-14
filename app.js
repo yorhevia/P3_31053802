@@ -1,11 +1,11 @@
 //Librerias y dependencias
 require('dotenv').config();
-const http = require('http');
 const express = require('express');
 const app = express();
 const path = require('path');
 const baseDatosModels = require('./models/bd.js');
-const {password,administrador} = process.env;
+const jwt = require("jsonwebtoken");
+const cookieParser = require('cookie-parser');
 let login= false;
 //recursos que se van a cargar en el server 
 app.use(express.static(__dirname+'/static'));
@@ -17,6 +17,7 @@ app.set('views',path.join(__dirname,"./views"));//definimos la ruta del motor de
 app.use(express.urlencoded({extended:false}));//permite recuperar los valores publicados en un request
 port = app.listen(5000);
 console.log('Servidor corriendo exitosamente en el puerto 5000');
+app.use(cookieParser());
 
 
 
@@ -30,35 +31,103 @@ app.get('/login',(req,res)=>{
 res.render('login.ejs');
 });
 
+//Enrutamiento del lado del cliente
+app.get('/loginclient',(req,res) => {
+  res.render('loginclient.ejs');
+})
+
+
+app.post('/loginclient',(req,res) => {
+  baseDatosModels.loginclient(req,res);
+})
+
+
+
+app.get('/registerclient',(req,res) => {
+  res.render('register.ejs',{
+    keypublic:process.env.KEYPUBLIC
+  });
+})
+
+app.post('/registerclient',async(req,res) => {
+  baseDatosModels.registerCliente(req,res);
+})
+
+
+app.get('/logout',(req,res) => {
+  baseDatosModels.logout(req,res);
+})
+
+
+
+
+
+
+
+
+
+app.get('/webpage',(req,res) => {
+  baseDatosModels.mostrarProductosCliente(req,res)
+})
+
+app.get('/webpagecart',(req,res) => {
+  res.render('webpagecart');
+})
+
+
+app.post('/webpagecart/:id',baseDatosModels.rutabloqueada, async(req,res) => {
+  baseDatosModels.webpageK(req,res)
+})
+
+app.post('/webpagecartpayment/:id',(req,res) => {
+  baseDatosModels.webpageCartPayment(req,res);
+})
+
+
+app.post('/filter',(req,res) => {
+  baseDatosModels.filter(req,res);
+})
+
+
+app.get('/cart/:id',(req,res) => {
+  baseDatosModels.Cart(req,res);
+})
+
+
 
 app.post('/login',(req,res)=>{
-
  const {admin,password} = req.body;
-
-   if(admin === administrador && password === password){
+  console.log(req.body)
+   if(admin === process.env.ADMIN && password === process.env.PASSWORD){
     login=true;
     res.redirect('/productos');
    }else{
     login=false;
-    res.redirect('/login');
+    res.redirect('/iniciarSesion');
    }
 
 });
   
+
+
+app.get('/clientsview',(req,res) => {
+  baseDatosModels.clientsview(req,res);
+})
 
 app.get('/add',(req,res)=>{
 res.render('add.ejs');
 });
 
 //---------------------------------------------------------
-app.get('/addImagen',(req,res)=>{
-res.render('addImagen.ejs');
+app.get('/addImagen/:id',(req,res)=>{
+baseDatosModels.addIMG(req,res)
 });
 
 
-app.post('/addImagen',(req,res)=>{
+app.post('/addImagen/:id',(req,res)=>{
 baseDatosModels.aggIMG(req,res);
 });
+
 
 
 app.post('/addPost',(req,res)=>{   
@@ -67,7 +136,7 @@ baseDatosModels.aggDato(req,res);
 
 
 app.get('/productos',(req,res)=>{
-  baseDatosModels.getProductos(req,res);
+  baseDatosModels.mostrarProductos(req,res);
 });
 //-------------------------------------------------------
 // GET /editar/:id
@@ -80,16 +149,15 @@ baseDatosModels.mostrarUpdate(req,res);
 app.post('/update/:id', (req, res) => {
  baseDatosModels.update(req,res);
 });
+
 //-------------------------------------------------------
 // GET /eliminar/:id
 app.get('/delete/:id', (req, res) => {
- baseDatosModels.mostrarDelete(req,res);
+baseDatosModels.deletee(req,res);
 });
 //-------------------------------------------------------
 // POST /eliminar/:id
-app.post('/delete/:id', (req, res) => {
- baseDatosModels.deletee(req,res);
-});
+
 //------------------------------------------------------
 app.get('/categorias', (req, res) => {
  baseDatosModels.getCategorias(req,res);
@@ -115,4 +183,11 @@ baseDatosModels.updateCateg(req,res);
 app.get('/*',(req,res)=>{
 res.render('notfound.ejs')
 });
+
 //-------------------------------------------------------
+
+
+
+
+
+//ejemplo para un commit
