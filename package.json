@@ -1,9 +1,13 @@
 {
   "dependencies": {
     "connect-multiparty": "^2.2.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "get-intrinsic": "^1.2.2",
+    "jsonwebtoken": "^9.0.2",
+    "node-fecth": "^0.0.1-security",
     "sqlite3": "^5.1.6",
     "startbootstrap-shop-homepage": "^5.0.6"
   },
