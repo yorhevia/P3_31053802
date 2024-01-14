@@ -59,13 +59,6 @@ app.get('/logout',(req,res) => {
 })
 
 
-
-
-
-
-
-
-
 app.get('/webpage',(req,res) => {
   baseDatosModels.mostrarProductosCliente(req,res)
 })
