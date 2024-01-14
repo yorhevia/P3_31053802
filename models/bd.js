@@ -133,7 +133,7 @@ function aggDato(req, res) {
   });
 }
 
-function mostrarProductos(req, res) {
+function mostrarProductosCliente(req, res) {
   const sql = `SELECT * FROM productos`;
   db.all(sql, [], (err, rows) => {
     console.log(rows,);
