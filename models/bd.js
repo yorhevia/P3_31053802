@@ -475,7 +475,6 @@ function webpageK(req, res) {
 //_-------------------------------------------------
 module.exports = {
   aggDato,
-  mostrarProductos,
   mostrarUpdate,
   update,
   mostrarDelete,
