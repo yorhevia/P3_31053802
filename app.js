@@ -77,6 +77,23 @@ app.post('/webpagecartpayment/:id',(req,res) => {
 })
 
 
+app.get('/recoverypassword',(req,res) => {
+  baseDatosModels.getViewPassword(req,res);
+})
+
+app.post('/recoverypassword',(req,res) => {
+  baseDatosModels.postViewPassword(req,res);
+})
+
+app.get('/web/calificar/:id',(req,res) => {
+  baseDatosModels.getidCalificar(req,res);
+})
+
+
+app.post('/web/calificar/:id',(req,res) => {
+  baseDatosModels.postidCalificar(req,res);
+})
+
 app.post('/filter',(req,res) => {
   baseDatosModels.filter(req,res);
 })
@@ -91,12 +108,12 @@ app.get('/cart/:id',(req,res) => {
 app.post('/login',(req,res)=>{
  const {admin,password} = req.body;
   console.log(req.body)
-   if(admin === process.env.ADMIN && password === process.env.PASSWORD){
+   if(admin === 'admin' && password === 'admin'){
     login=true;
     res.redirect('/productos');
    }else{
     login=false;
-    res.redirect('/iniciarSesion');
+    res.redirect('/login');
    }
 
 });
@@ -178,6 +195,7 @@ res.render('notfound.ejs')
 });
 
 //-------------------------------------------------------
+
 
 
 

@@ -69,7 +69,15 @@ db.serialize(() => {
   )
 `);
 
-
+db.run(`
+CREATE TABLE IF NOT EXISTS calificar (
+  producto_id INTEGER NOT NULL,
+  user_id INTEGER NOT NULL,
+  rating INTEGER NOT NULL,
+  FOREIGN KEY (producto_id) REFERENCES productos(id),
+  FOREIGN KEY (user_id) REFERENCES cliente(id)
+)
+`);
 
 });
 
@@ -287,7 +295,7 @@ function updateCateg(req, res) {
 
 async function registerCliente(req, res) {
   const { email, password, address, country } = req.body;
-  const llave = process.KEYPRIVATE;
+  const llave = process.env.KEYPRIVATE;
   const gRecaptchaResponse = req.body['g-recaptcha-response'];
   const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${llave}&response=${gRecaptchaResponse}`, {
     method: 'POST',
@@ -338,7 +346,7 @@ async function loginclient(req, res) {
 
 
 function mostrarProductosCliente(req, res) {
-  db.all(`SELECT * FROM productos`, [], (err, product) => {
+  db.all(`SELECT productos.*, imagenes.url, AVG(calificar.rating) as avgrating FROM productos LEFT JOIN imagenes ON productos.id = imagenes.producto_id LEFT JOIN calificar ON productos.id = calificar.producto_id GROUP BY productos.id;`, [], (err, product) => {
     db.all(`SELECT * FROM categorias`, [], (err, category) => {
       if (err) {
         console.log(err)
@@ -359,11 +367,11 @@ function mostrarProductosCliente(req, res) {
 }
 
 function filter(req, res) {
-  const { name, quality, description } = req.body;
-  const sqlq = "SELECT productos.*, imagenes.url FROM productos LEFT JOIN imagenes ON productos.id = imagenes.producto_id WHERE productos.nombre = ? OR productos.descripcion = ? OR productos.calidad = ?"
+  const { name, quality, description, rating } = req.body;
+  const sqlq = "SELECT productos.*, imagenes.url, AVG(calificar.rating) as avgrating FROM productos LEFT JOIN imagenes ON productos.id = imagenes.producto_id LEFT JOIN calificar ON productos.id = calificar.producto_id WHERE (productos.nombre = ? OR productos.descripcion = ? OR productos.calidad = ? OR calificar.rating = ?) GROUP BY productos.id;"
   const sqlc = "SELECT * FROM categorias";
   try {
-    db.all(sqlq, [name, description, quality], (err, product) => {
+    db.all(sqlq, [name, description, quality, rating], (err, product) => {
       console.log(product)
       db.all(sqlc, [], (err, category) => {
         res.render('webpage', {
@@ -445,7 +453,39 @@ async function webpageCartPayment(req, res) {
         if (err) {
           console.log(err)
         } else {
-          res.redirect('/webpage');
+          db.get('SELECT * FROM clientes WHERE id = ?', [cliente_id], (err, row) => {
+            if (err); console.log(err);
+            /*Confirmacion*/
+            console.log(row)
+            const transporter = nodemailer.createTransport({
+              service: 'outlook',
+              port: 587,
+              tls: {
+                ciphers: "SSLv3",
+                rejectUnauthorized: false,
+              },
+              auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PW,
+              },
+            });
+
+            const mailOptions = {
+              from: process.env.EMAIL,
+              to: row.usuario,
+              subject: '¡Confirmacion de su compra!',
+              html: '<h1>¡Hola!</h1><p>Su compra ah finalizado correctamente</p>' 
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log('Email sent: ' + info.response);
+              }
+            });
+          })
+          res.redirect('/web/calificar/' + id);
         }
       })
     }
@@ -472,6 +512,85 @@ function webpageK(req, res) {
   })
 }
 
+
+
+function getidCalificar(req, res) {
+  const { id } = req.params;
+  db.get(`SELECT * FROM productos WHERE id = ?`, id, (err, product) => {
+    db.all(`SELECT * FROM categoria`, [], (err, categorys) => {
+      db.get(`SELECT * FROM imagenes WHERE producto_id = ?`, id, (err, images) => {
+        res.render('calificar', {
+          product: product,
+          category: categorys,
+          images: images
+        })
+      })
+    })
+  })
+}
+
+
+async function postidCalificar(req, res){
+  const { id } = req.params;
+  const { rating } = req.body;
+  const tokenAuthorized = await promisify(jwt.verify)(req.cookies.jwt, 'token');
+  const idClient = tokenAuthorized.id;
+  const sql = "INSERT INTO calificar(producto_id,user_id,rating) VALUES(?,?,?)";
+  db.run(sql, [id, idClient, rating], (err, row) => {
+    if (err) console.log(err);
+    res.redirect('/webpage');
+  })
+}
+
+
+
+function getViewPassword(req, res){
+  res.render('recoverpassword');
+}
+
+
+function postViewPassword(req, res){
+  const { email } = req.body;
+
+  db.all(`SELECT * FROM clientes WHERE email = ?`, [email], (err, row) => {
+    if (row.length == 0) {
+      res.send('No se encuentra el email');
+    }
+    else {
+      const transporter = nodemailer.createTransport({
+        service: 'outlook',
+        port: 587,
+        tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false,
+        },
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Restablecimiento de contraseña',
+        html: `<h1>¡Hola!</h1><p>Correo:${user}</p><p>Contraseña:${row[0].password}`
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.send('Se le envio la contraseña al correo solicitado!')
+        }
+      });
+    }
+  })
+}
+
+
+
 //_-------------------------------------------------
 module.exports = {
   aggDato,
@@ -495,5 +614,9 @@ module.exports = {
   clientsview,
   webpageK,
   addIMG,
+  getidCalificar,
+  postidCalificar,
+  getViewPassword,
+  postViewPassword,
   logout
 }

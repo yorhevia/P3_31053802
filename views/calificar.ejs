@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Televisión - P3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Televisiones</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Inicio</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/registerclient"><span class="glyphicon glyphicon-user"></span> Registro</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="bodycard">
+            <div class="container-card" style="padding: 1rem; border-radius: 10px;">
+                <div class="article" style="display: flex; justify-content: center; margin-bottom: 2rem;">
+
+                    <div class="img">
+                        <img src="<%=images.url %>" alt="" width="200px" style="border-radius:5px;">
+                    </div>
+                    <div class="information">
+                    <p style="margin-top: 1.4rem; margin-left: 1.5rem; font-size: 2rem;">Nombre: <%=product.nombre %></p>
+                    <p style="margin-top: 1.4rem; margin-left: 1.5rem; font-size: 2rem;">Descripcion: <%=product.descripcion %></p>
+                </div>
+                </div>
+                <div class="credit" style="display: flex; justify-content: center;">
+                    <form class="form-horizontal" action="/web/calificar/<%=product.id %>" style="width: 520px; display: flex; justify-content: center; flex-direction: column; gap: 9px;" method="POST">
+
+                            <label class="control-label" for="email" style="text-align: center; font-size: 2rem;">Califica del 1 al 5</label>
+                                <select name="rating" style="padding: 1rem;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            
+                        <button type="submit" class="btn btn-default">Enviar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-------------->
+
+
+
+</body>
+
+</html>
