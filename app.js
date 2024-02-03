@@ -108,7 +108,7 @@ app.get('/cart/:id',(req,res) => {
 app.post('/login',(req,res)=>{
  const {admin,password} = req.body;
   console.log(req.body)
-   if(admin === 'admin' && password === 'admin'){
+   if(admin === process.env.ADMIN && password === process.env.PASSWORD){
     login=true;
     res.redirect('/productos');
    }else{
